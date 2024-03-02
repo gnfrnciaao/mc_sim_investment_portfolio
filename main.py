@@ -88,10 +88,11 @@ def hist_return_simulation(year, capital, equity_rets, bond_rets):
                 sim_matrix[j][i] = ((sim_matrix[j - 1][i] - annual_expenditures * (1 + inflation) ** j + (j >= pension_start_year) * annual_pension) *
                                 (1 + random_return_bond))
 
-    if results_type == "value":
-        return calculate_value(sim_matrix)
-    elif results_type == "ratio":
+
+    if results_type == "ratio":
         return calculate_ratio(sim_matrix)
+    elif results_type == "value":
+        return calculate_value(sim_matrix)
     else:
         return calculate_returns(extracted_returns)
 
@@ -115,10 +116,10 @@ def normal_dist_simulation(year, capital, equity_rets, bond_rets):
                 sim_matrix[j][i] = ((sim_matrix[j - 1][i] - annual_expenditures * (1 + inflation) ** j + (j >= pension_start_year) * annual_pension) *
                                 (1 + random_return_bond))
 
-    if results_type == "value":
-        return calculate_value(sim_matrix)
-    elif results_type == "ratio":
+    if results_type == "ratio":
         return calculate_ratio(sim_matrix)
+    elif results_type == "value":
+        return calculate_value(sim_matrix)
     else:
         return calculate_returns(extracted_returns)
 
@@ -154,10 +155,13 @@ def main():
 
     X_labels = [str(x * 100) + "k" for x in range(1, buckets, 1)]
     Y_labels = [x for x in range(0,max_number_years)]
-    plt.figure(figsize=(30, 25))
-    seaborn.set(font_scale=1)
-    seaborn.heatmap(results_matrix, cmap="PiYG", fmt=digit_format, annot=True, center=0, xticklabels=X_labels, yticklabels=Y_labels, annot_kws={"size": 11})
 
+    plt.figure(figsize=(25, 25))
+    seaborn.set(font_scale=1)
+    seaborn.heatmap(results_matrix, cmap="PiYG", fmt=digit_format, annot=True, annot_kws={"size": 11}, center=0,
+                    xticklabels=X_labels, yticklabels=Y_labels,  )
+    plt.xlabel("Initial capital")
+    plt.ylabel("Number of years")
     plt.show()
 
 
